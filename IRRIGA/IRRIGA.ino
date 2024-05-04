@@ -11,11 +11,11 @@ bool irrigar = false;
 void setup() {
   Serial.begin(9600);
 
-  pinMode(rele, OUTPUT);
+  pinMode (rele,  OUTPUT);
   pinMode (sensor, INPUT); 
-  pinMode (LedA, OUTPUT);
-  pinMode (LedV, OUTPUT);
-  pinMode(LedG, OUTPUT);
+  pinMode (LedA,  OUTPUT);
+  pinMode (LedV,  OUTPUT);
+  pinMode (LedG,  OUTPUT);
 
   leituraSensor = 0;
 
@@ -24,9 +24,9 @@ void setup() {
 }
 
 void loop() {
-  
+
  leituraSensor = analogRead(sensor); 
- 
+
  irrigar = digitalRead(sensor);
 
  if(irrigar){
@@ -35,8 +35,10 @@ void loop() {
  else{
   digitalWrite(rele, HIGH);
  }
- 
-    if (leituraSensor >850){ // quando sensor estiver seco
+
+    if (leituraSensor >850){
+      
+        digitalWrite(rele, LOW);// quando sensor estiver seco
         delay(120); //espera em milissegundos
         digitalWrite(LedA, LOW);
         digitalWrite(LedV, HIGH);
@@ -45,6 +47,7 @@ void loop() {
 
     }
     if (leituraSensor >500 && leituraSensor <800){ // sensor meio molhado
+        digitalWrite(rele, HIGH);
         delay(120);
         digitalWrite(LedA, LOW);
         digitalWrite(LedG, HIGH);
@@ -53,6 +56,7 @@ void loop() {
       
     }
     if (leituraSensor <500){ // sensor molhado
+        digitalWrite(rele, HIGH);
         delay(120);
         digitalWrite(LedA, HIGH);
         digitalWrite(LedV, LOW);
