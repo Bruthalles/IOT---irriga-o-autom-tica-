@@ -1,69 +1,31 @@
-int leituraSensor; 
-int LedA = 13; //led azul
-int LedV = 6; //led vermelho
-int LedG = 5; // led verde
-int sensor = A0; //sensor umidade
-int rele = 2; //rele bomba dagua
+int rele = 7;
 
-bool irrigar = false;
-
-
-void setup() {
+void setup(){
   Serial.begin(9600);
-
-  pinMode (rele,  OUTPUT);
-  pinMode (sensor, INPUT); 
-  pinMode (LedA,  OUTPUT);
-  pinMode (LedV,  OUTPUT);
-  pinMode (LedG,  OUTPUT);
-
-  leituraSensor = 0;
-
-  digitalWrite(rele, HIGH); // relé é ao contrario, definir HIGH deixa desligado
-
+  pinMode(A0, INPUT); //sensor 
+  pinMode(rele, OUTPUT); //rele
 }
+void loop (){
+  
+  int leituraSensor = analogRead(A0);
+  int dadoRele = digitalRead(rele);
 
-void loop() {
-
- leituraSensor = analogRead(sensor); 
-
- irrigar = digitalRead(sensor);
-
- if(irrigar){
-  digitalWrite(rele,LOW);
- }
- else{
-  digitalWrite(rele, HIGH);
- }
-
-    if (leituraSensor >850){
-      
-        digitalWrite(rele, LOW);// quando sensor estiver seco
-        delay(120); //espera em milissegundos
-        digitalWrite(LedA, LOW);
-        digitalWrite(LedV, HIGH);
-        digitalWrite(LedG, LOW);
-        delay(100);
-
-    }
-    if (leituraSensor >500 && leituraSensor <800){ // sensor meio molhado
-        digitalWrite(rele, HIGH);
-        delay(120);
-        digitalWrite(LedA, LOW);
-        digitalWrite(LedG, HIGH);
-        digitalWrite(LedV, LOW);
-        delay(100);
-      
-    }
-    if (leituraSensor <500){ // sensor molhado
-        digitalWrite(rele, HIGH);
-        delay(120);
-        digitalWrite(LedA, HIGH);
-        digitalWrite(LedV, LOW);
-        digitalWrite(LedG, LOW);
-        delay(100);
-    }
-    Serial.println(leituraSensor);
-
-
+  if(leituraSensor > 900){ // sensor seco
+    
+    delay(1000);    
+    digitalWrite(8, HIGH); //led on
+    digitalWrite(7, LOW); // rele on
+  }
+  else{
+  
+    digitalWrite(8, LOW);   //led on
+    digitalWrite(7, HIGH); // rele off
+    delay(5000); // após molhar, espera 5 segundos para ler de novo
+  }
+  
+  Serial.print("Umidade: ");
+  Serial.println(leituraSensor);
+  Serial.println("___________");
+  Serial.print("rele: ");
+  Serial.println(dadoRele); 
 }
