@@ -3,7 +3,7 @@ int rele = 7;
 void setup(){
   Serial.begin(9600);
   pinMode(A0, INPUT); //sensor 
-  pinMode(rele, OUTPUT); //rele
+  pinMode(rele, OUTPUT); 
 }
 void loop (){
   
